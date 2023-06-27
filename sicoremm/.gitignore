@@ -474,4 +474,4 @@ composer.lock
 *.scss.map
 
 ##### Data Base
-DAT/conf.php
+sicoremm/DAT/conf.php
