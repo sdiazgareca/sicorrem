@@ -1,0 +1,153 @@
+#contenedor{
+width:800px;
+margin:0;
+height:auto;
+padding:inherit;
+border-bottom:none;
+display:inherit;
+background:#FFFFFF;
+}
+
+#cabezera{
+width:800px;
+height:40px;
+border-bottom:solid #F6DF17 10px;
+margin:inherit;
+background:#FFFFFF;
+}
+
+.relleno{
+background-image:url(../IMG/fondo_tab.jpg);
+border-left: 2px solid #B1CEB8;
+border-right: 2px solid #B1CEB8;
+width:540px;
+margin:0 auto 0 auto;
+height:20px;
+padding:5px 0px 10px 0px;
+background-repeat:repeat-x;
+background-color:#E3EEE6;
+}
+
+.relleno a{
+text-decoration:none;
+font-weight:bold;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#666666;
+}
+
+.relleno a:hover{
+color:#003366;
+}
+
+#der {
+width:250px;
+height:540px;
+margin:0 auto 0 auto;
+background:#E3EEE6;
+border: 2px solid #B1CEB8;
+color:#099CAC;
+float:left;
+overflow:auto;
+}
+
+#izq{
+width:540px;
+height:540px;
+float:left;
+}
+#bus{
+background-color:#E3EEE6;
+width:540px;
+margin:0 auto 0 auto;
+border-left: 2px solid #B1CEB8;
+border-right: 2px solid #B1CEB8;
+border-bottom: 2px solid #B1CEB8;
+overflow:auto;
+height:420px;
+}
+
+#formulario{
+width:540px;
+margin:0 auto 0 auto;
+border-left: 2px solid #B1CEB8;
+border-right: 2px solid #B1CEB8;
+background-color:#E3EEE6;
+color:#044E56;
+}
+
+#titulo_ficha{
+background-color:#DFECF2;
+color:#003366;
+font-weight:550;
+font-size:14px;
+padding:10px;
+}
+
+.celda1{
+background-color:#A6B7AF;
+color:#FFFFFF;
+font-size:12px;
+padding:2px;
+}
+
+.celda2{
+border:10x hidden #7894A2;
+background-color:#FFFFFF;
+padding:5px;
+font-size:10px;
+color:#003366;
+}
+
+.celda4{
+background-color:#FFFFFF;
+padding:5px;
+font-size:10px;
+color:#003366;
+}
+
+.celda4 a{
+color:#FFFFFF;
+}
+
+.trr{
+border:solid 1px;
+}
+.mensaje{
+padding:10%;
+text-align:center;
+color:#003366;
+height:30px;
+width:auto;
+background:#E3EEE6;
+margin:0 auto 0 auto;
+}
+
+.celda3{
+border:10px hidden #7894A2;
+background-color:#FFFFFF;
+padding:5px;
+font-size:11px;
+color:#003366;
+}
+
+table{
+background-color:#A6B7AF;
+}
+
+form{
+margin:0px;
+padding:0px;
+}
+
+table{
+width:530px;
+}
+
+table tr td a{
+color:#003366;
+}
+
+table tr td a:hover{
+border-bottom: #003366 solid 1px;
+}

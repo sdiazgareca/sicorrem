@@ -1,0 +1,154 @@
+#contenedor{
+width:800px;
+margin:0;
+height:auto;
+padding:inherit;
+border-bottom:none;
+display:inherit;
+background:#FFFFFF;
+}
+
+#cabezera{
+width:800px;
+height:38px;
+border-bottom:solid #FFC000 10px;
+margin:inherit;
+background:#FFFFFF;
+}
+
+.relleno{
+width:800px;
+background-color:#E3EEE6;
+margin:0 auto 0 auto;
+padding:10px 0px 10px 0px;
+background-repeat:repeat-x;
+}
+
+.relleno a{
+text-decoration:none;
+font-weight:bold;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#666666;
+}
+
+.relleno a:hover{
+color:#003366;
+}
+
+#der {
+width:250px;
+height:530px;
+margin:0 auto 0 auto;
+background:#E3EEE6;
+border: 2px solid #B1CEB8;
+color:#099CAC;
+float:left;
+overflow:auto;
+}
+
+#izq{
+width:540px;
+height:530px;
+float:left;
+overflow:auto;
+border-bottom: 2px solid #B1CEB8;
+border-left: 2px solid #B1CEB8;
+border-right: 2px solid #B1CEB8;
+background-color:#E3EEE6;
+}
+
+#bus{
+width:520px;
+margin:0 auto 0 auto;
+height:auto;
+min-height:405px;
+}
+
+#formulario{
+width:520px;
+margin:0 auto 0 auto;
+background-color:#E3EEE6;
+color:#044E56;
+padding-top:5px;
+}
+
+#titulo_ficha{
+background-color:#DFECF2;
+color:#003366;
+font-weight:550;
+font-size:14;
+padding:10px;
+}
+
+.celda1{
+background-color:#A6B7AF;
+color:#FFFFFF;
+font-size:12px;
+padding:2px;
+}
+
+.celda1 a{
+color:#FFFFFF;
+}
+
+.celda2{
+border:10px hidden #7894A2;
+background-color:#FFFFFF;
+padding:5px;
+font-size:10px;
+color:#003366;
+}
+
+.celda4{
+background-color:#FFFFFF;
+padding:5px;
+font-size:10px;
+color:#003366;
+}
+
+.celda4 a{
+color:#FFFFFF;
+}
+
+.trr{
+border:solid 1px;
+}
+.mensaje{
+padding:10%;
+text-align:center;
+color:#003366;
+height:30px;
+width:auto;
+background:#E3EEE6;
+margin:0 auto 0 auto;
+}
+
+.celda3{
+border:10px hidden #7894A2;
+background-color:#FFFFFF;
+padding:5px;
+font-size:11px;
+color:#003366;
+}
+
+table{
+background-color:#A6B7AF;
+}
+
+form{
+margin:0px;
+padding:0px;
+}
+
+table{
+width:530px;
+}
+
+table tr td a{
+color:#003366;
+}
+
+table tr td a:hover{
+border-bottom: #003366 solid 1px;
+}

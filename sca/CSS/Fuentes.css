@@ -1,0 +1,155 @@
+#DetalleAmb{
+position: absolute;
+border: 1px solid #666666;
+background-color:#E3EEE6;
+width: 410px;
+height:auto;
+margin-top: 50px;
+visibility:hidden;
+}
+
+
+#control_de_tiempos{
+position: absolute;
+border: 1px solid #666666;
+background-color:#E3EEE6;
+width: 400px;
+height:auto;
+margin-top: 50px;
+visibility:hidden;
+}
+
+#popup{
+position: absolute;
+border: 1px solid #666666;
+background-color:#E3EEE6;
+width: 400px;
+height:auto;
+margin-top: 50px;
+visibility:hidden;
+}
+
+#patallagrande{
+position: absolute;
+height:auto;
+width:auto;
+border: 1px solid #666666;
+background-color:#E3EEE6;
+margin-top: 50px;
+}
+
+.sintoma a{
+background:#FFFEE0;
+float:left;
+width:auto;
+border:2px solid #FFFFFF;
+padding:5px;
+font-weight:bold;
+float:left;
+text-decoration:none;
+font-weight:bold;
+size:12;
+}
+
+.sintoma a:hover{
+text-decoration:none;
+border:2px solid #FFFFFF;
+color:#006699;
+}
+.text{
+size:9px;
+color:#006699;
+}
+
+a{
+color:#FFFFFF;
+font-weight:bold;
+text-decoration:none;
+}
+
+h1{
+font-size:12px;
+font-weight:bold;
+padding:1px 10px 1px 10px;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+font-weight:bold;}
+
+div{
+padding:0px;
+margin:0px;
+border:0px;
+}
+
+table{
+padding:0px;
+margin:0px;
+border:0px;
+margin:auto;
+width:500px}
+
+.boton{
+font-weight:bold;
+font-family:Arial, Helvetica, sans-serif;
+font-size:10px;
+color:#3BA1AD;
+background-image:url(../IMG/fondo_tab.jpg);
+}
+
+.boton1{
+font-weight:bold;
+font-family:Arial, Helvetica, sans-serif;
+font-size:10px;
+color:#FFFFFF;
+background-image:url(../IMG/fondo_tab.jpg);
+}
+
+.boton11{
+font-weight:bold;
+border: #003366 solid 1px;
+padding:5px;
+font-size:8px;
+font-family:Arial, Helvetica, sans-serif;
+color:#FFFFFF;
+background-image:url(../IMG/fondo_tab.jpg);
+}
+
+.boton11:hover{
+border-bottom:solid #FFCC00 2px; 
+}
+
+.boton1:hover{
+border-bottom:solid #FFCC00 2px; 
+}
+
+.boton:hover{
+color:#94A799;
+}
+
+input{
+  font-size:11px;
+  border-color:#000080;
+  border-style:ridge;
+  border-width:1px;
+  color:#003366;
+  padding:2px;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+textarea{
+  font-size:11px;
+  font-family:Arial, Helvetica, sans-serif;
+  border-color:#CCE1D2;
+  border-style:ridge;
+  border-width:1px;
+  color:#000000;
+  padding:2px;
+}
+
+select{
+background:#FFFFFF;
+border-color:#000080;
+}
