@@ -403,6 +403,46 @@ function cambiarRenunciaContratos($num_solici,$f_baja){
     return $query;
 }
 
+function obtenerDigitoVerificador($rutSinDV) {
+    $rut = str_replace('.', '', $rutSinDV); // Eliminar puntos
+    $rut = str_replace('-', '', $rut); // Eliminar guión
+
+    $reversedRut = strrev($rut); // Invertir el RUT
+    $sum = 0;
+    $multiplier = 2;
+
+    for ($i = 0; $i < strlen($reversedRut); $i++) {
+        $sum += intval($reversedRut[$i]) * $multiplier;
+        $multiplier = $multiplier % 7 == 0 ? 2 : $multiplier + 1;
+    }
+
+    $dv = 11 - ($sum % 11);
+
+    if ($dv == 11) {
+        return '0';
+    } elseif ($dv == 10) {
+        return 'K';
+    } else {
+        return strval($dv);
+    }
+}
+
+function cortarString($texto, $cantidadCaracteres) {
+    if (strlen($texto) <= $cantidadCaracteres) {
+        return $texto;
+    } else {
+        $textoCortado = substr($texto, 0, $cantidadCaracteres);
+        return $textoCortado;
+    }
+}
+
+function escapeString($string) {
+    $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
+    $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
+
+    return str_replace($search, $replace, $string);
+}
+
 
 function pago_cta($nro_doc,$tipo_comp,$comprovante,$afectacion,$fecha_mov,$fecha_vto,$importe,$cobrador,$num_solici,$fecha,$debe,$haber,$rendicion,$ajuste,$comp,$e_nombre,$e_domicilio,$zo,$se,$ma,$periodo,$mes,$telefono,$secuencia,$tipo_plan,$cod_plan,$mes_palabras,$anio){
 
@@ -411,39 +451,32 @@ function pago_cta($nro_doc,$tipo_comp,$comprovante,$afectacion,$fecha_mov,$fecha
 
     $consulta = "SELECT COUNT(cta.nro_doc) AS N FROM cta WHERE cta.nro_doc='".$nro_doc."' AND num_solici='".$num_solici."' AND  MONTH(fecha_mov)='".$fecha[1]."' AND YEAR(fecha_mov)='".$fecha[0]."' AND (cod_mov='1' || cod_mov='53')";
     
-    $con = mysql_query($consulta);
-    $num = mysql_fetch_array($con);
+    $con = mysql_query($consulta) or die(mysql_error());
+    $num = mysql_fetch_array($con) or die(mysql_error());
 
 
     if ($num['N'] < 1){
 
-    $insert_sql = "INSERT INTO cta (tip_doc,nro_doc,tipo_comp,serie,comprovante,cod_mov,afectacion,fecha_mov,fecha_vto,importe,cobrador,num_solici,fecha,debe,haber,rendicion) VALUES(1,'".$nro_doc."','".$tipo_comp."','50','".$comprovante."','1','0','".$fecha_mov."','".$fecha_vto."','".$importe."','".$cobrador."','".$num_solici."','".$fecha[0].'-'.$fecha['1'].'-'.$fecha['2']."','".$importe."','0','NULL')";
+    $insert_sql = "INSERT INTO cta (tip_doc,nro_doc,tipo_comp,serie,comprovante,cod_mov,afectacion,fecha_mov,fecha_vto,importe,cobrador,num_solici,fecha,debe,haber,rendicion) VALUES(1,'".$nro_doc."','".$tipo_comp."','50','".$comprovante."','1','0','".$fecha_mov."','".$fecha_vto."','".$importe."','".$cobrador."','".$num_solici."','".$fecha[0].'-'.$fecha['1'].'-'.$fecha['2']."','".$importe."','0',NULL)";
+    $digitoVerificador = obtenerDigitoVerificador($nro_doc);
 
-    $dv = new Datos;
-    $dv->Rut($nro_doc);
+    $e_domicilio = cortarString($e_domicilio, 30);
+    $telefono = cortarString($telefono, 50);
+    $e_domicilio = escapeString($e_domicilio);    
 
     $emi_par = "INSERT INTO emi_par_b_imp(e_deuda,  e_tipo ,e_nro         ,e_tipo_comp,  e_serie_comp,   e_comp,          e_nombre,         e_domicilio,             e_cuit,          e_localidad,    e_zona,     e_seccion,     e_manzana,   e_periodo,          e_cond_iva,      e_cuota,         e_iva10,     e_iva05,    e_total,           e_telefono,          e_cant,                grupo_vie,              e_tipo_plan,       e_cod_plan,              fila,    e_codbar,             e_mes,                 e_letras,                      e_ano,         e_nromes,e_rut) 
-                                     VALUES('0001', '01'   ,'".$nro_doc."','B',          '00050',        '".$comp."',     '".$e_nombre."',  '".$e_domicilio."',      '".$nro_doc."',  'ANTOFAGASTA',  '".$zo."',  '".$se."',     '".$ma."',   '".$periodo."',     '".$mes."',      '".$importe."',  '0',         '0',        '".$importe."',    '".$telefono."',     '".$secuencia."',      '".$num_solici."',      '".$tipo_plan."',  '".$cod_plan."',         '1',     NULL,                 '".$mes_palabras."',   '".convertir($importe)."',     '".$anio."',   '".$mes."', '".$dv->nro_doc."');";
+                                     VALUES('0001', '01'   ,'".$nro_doc."','B',          '00050',        '".$comp."',     '".$e_nombre."',  '".$e_domicilio."',      '".$nro_doc."',  'ANTOFAGASTA',  '".$zo."',  '".$se."',     '".$ma."',   '".$periodo."',     '".$mes."',      '".$importe."',  '0',         '0',        '".$importe."',    '".$telefono."',     '".$secuencia."',      '".$num_solici."',      '".$tipo_plan."',  '".$cod_plan."',         '1',     NULL,                 '".$mes_palabras."',   '".convertir($importe)."',     '".$anio."',   '".$mes."', '".$digitoVerificador."');";
 
 
     $IVA="INSERT INTO IVA(e_deuda,  e_tipo ,e_nro         ,e_tipo_comp,  e_serie_comp,   e_comp,          e_nombre,         e_domicilio,             e_cuit,          e_localidad,    e_zona,     e_seccion,     e_manzana,   e_periodo,          e_cond_iva,      e_cuota,         e_iva10,     e_iva05,    e_total,           e_telefono,          e_cant,                grupo_vie,              e_tipo_plan,       e_cod_plan,              fila,    e_codbar,             e_mes,                 e_letras,                      e_ano,         e_nromes,e_rut)
-                                     VALUES('0001', '01'   ,'".$nro_doc."','B',          '00050',        '".$comp."',     '".$e_nombre."',  '".$e_domicilio."',      '".$nro_doc."',  'ANTOFAGASTA',  '".$zo."',  '".$se."',     '".$ma."',   '".$periodo."',     '".$mes."',      '".$importe."',  '0',         '0',        '".$importe."',    '".$telefono."',     '".$secuencia."',      '".$num_solici."',      '".$tipo_plan."',  '".$cod_plan."',         '1',     NULL,                 '".$mes_palabras."',   '".convertir($importe)."',     '".$anio."',   '".$mes."', '".$dv->nro_doc."')";
+                                     VALUES('0001', '01'   ,'".$nro_doc."','B',          '00050',        '".$comp."',     '".$e_nombre."',  '".$e_domicilio."',      '".$nro_doc."',  'ANTOFAGASTA',  '".$zo."',  '".$se."',     '".$ma."',   '".$periodo."',     '".$mes."',      '".$importe."',  '0',         '0',        '".$importe."',    '".$telefono."',     '".$secuencia."',      '".$num_solici."',      '".$tipo_plan."',  '".$cod_plan."',         '1',     NULL,                 '".$mes_palabras."',   '".convertir($importe)."',     '".$anio."',   '".$mes."', '".$digitoVerificador."')";
 
-     /*$bilia = "INSERT INTO emision_par_b(e_deuda,  e_tipo ,e_nro         ,e_tipo_comp,  e_serie_comp,   e_comp,          e_nombre,         e_domicilio,             e_cuit,          e_localidad,    e_zona,     e_seccion,     e_manzana,   e_periodo,          e_cond_iva,      e_cuota,         e_iva10,     e_iva05,    e_total,           e_telefono,          e_cant,                grupo_vie,              e_tipo_plan,       e_cod_plan,              fila,    e_codbar,             e_mes,                 e_letras,                      e_ano,         e_nromes,e_rut)
-                                     VALUES('0001', '01'   ,'".$nro_doc."','B',          '00050',        '".$comp."',     '".$e_nombre."',  '".$e_domicilio."',      '".$nro_doc."',  'ANTOFAGASTA',  '".$zo."',  '".$se."',     '".$ma."',   '".$periodo."',     '".$mes."',      '".$importe."',  '0',         '0',        '".$importe."',    '".$telefono."',     '".$secuencia."',      '".$num_solici."',      '".$tipo_plan."',  '".$cod_plan."',         '1',     NULL,                 '".$mes_palabras."',   '".convertir($importe)."',     '".$anio."',   '".$mes."', '".$dv->nro_doc."');";
-
-     echo '<br />'.$bilia.'<br />';
-*/
 
     $bilia = "INSERT INTO emision_par_b (e_iva10,e_iva05,e_deuda,e_tipo,e_nro         ,e_tipo_comp,e_serie_comp,         e_comp,          e_nombre,        e_domicilio,              e_cuit,          e_localidad,   e_zona,     e_seccion,     e_manzana,    e_periodo,        e_cond_iva,        e_cuota,                                  e_total,           e_telefono,          e_cant,                 grupo_vie,              e_tipo_plan,e_cod_plan)
                                    VALUES('".$importe."','".$importe."','0001','01'  ,'".$nro_doc."','B',        '00050',         '".$comp."',     '".$e_nombre."', '".$e_domicilio."',       '".$nro_doc."',  'ANTOFAGASTA', '".$zo."',  '".$se."',     '".$ma."',    '01".$mes.$anio."',   '".$mes."',             '".$importe."',                           '".$importe."',    '".$telefono."',     '".$secuencia."',       '".$num_solici."',      '".$tipo_plan."',  '".$cod_plan."')";
 
 
-   //$IVA = "INSERT INTO IVA (e_iva10,e_iva05,e_deuda,e_tipo,e_nro         ,e_tipo_comp,e_serie_comp,         e_comp,          e_nombre,        e_domicilio,              e_cuit,          e_localidad,   e_zona,     e_seccion,     e_manzana,    e_periodo,        e_cond_iva,        e_cuota,                                  e_total,           e_telefono,          e_cant,                 grupo_vie,              e_tipo_plan,e_cod_plan)
-     //                              VALUES('".$importe."','".$importe."','0001','01'  ,'".$nro_doc."','B',        '00050',         '".$comp."',     '".$e_nombre."', '".$e_domicilio."',       '".$nro_doc."',  'ANTOFAGASTA', '".$zo."',  '".$se."',     '".$ma."',    '01".$mes.$anio."',   '".$mes."',             '".$importe."',                           '".$importe."',    '".$telefono."',     '".$secuencia."',       '".$num_solici."',      '".$tipo_plan."',  '".$cod_plan."')";
 
-
-    //echo '<br />acap'.$bilia.'<br />';
 
     $update_con = "UPDATE contratos SET contratos.ajuste='".$ajuste."' WHERE num_solici='".$num_solici."' AND titular='".$nro_doc."'";
     mysql_query($bilia);
