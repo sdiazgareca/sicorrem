@@ -1,0 +1,68 @@
+
+#menu_main {  
+	padding:0;
+	background-color:#94AEB1;
+	padding:10px;
+	border-bottom: 10px #18A1B1 solid;
+	border-top: 5px #94AEB1 solid;
+	width:930px;
+	height:15px;
+	list-style:none;
+	margin:0;
+	padding:0;
+	color:#000;
+	font-weight:bold;
+}
+
+#menu_main ul{
+    list-style:none; /* Eliminamos los bullets */
+    margin:0px; /* Quitamos los margenes */
+    padding:0px; /* Quitamos el padding */
+}
+#menu_main ul li {
+    float:left; /* Hacemos que el menu se muestre horizontal */
+    padding-left:10px;
+    padding-right:10px;
+    border-right:1px solid #FFFFFF;
+}
+#menu_main ul li a{
+    text-decoration:none;
+    color:#FFF;
+    font-weight:bold;
+}
+#menu_main ul li a:hover{
+    color:#4E5636;
+}
+/* MENU 02*/
+
+#menu_main2 {  
+	padding:0;
+	background-color:#18A1B1;
+	padding:5px;
+	border: 5px #8CD0D8 solid;
+	width:930px;
+	height:15px;
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+
+#menu_main2 ul{
+    list-style:none; /* Eliminamos los bullets */
+    margin:0px; /* Quitamos los margenes */
+    padding:0px; /* Quitamos el padding */
+}
+#menu_main2 ul li {
+    float:left; /* Hacemos que el menu se muestre horizontal */
+    padding-left:10px;
+    padding-right:10px;
+    border-right:1px solid #FFFFFF;
+}
+#menu_main2 ul li a{
+    text-decoration:none;
+    color:#FFF;
+    font-weight:bold;
+}
+#menu_main2 ul li a:hover{
+    color:#4E5636;
+}
