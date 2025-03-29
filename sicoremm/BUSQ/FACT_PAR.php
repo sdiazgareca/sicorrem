@@ -56,9 +56,10 @@ if ($boletas < 1 || is_numeric($boletas) == 0 || $periodo == "" || checkdate($me
 $sql ="SELECT COUNT(num_solici) AS secuencia,num_solici,nro_doc
 FROM afiliados
 WHERE (afiliados.cod_baja='00'  ||  afiliados.cod_baja='AJ' || afiliados.cod_baja='AZ'  ||  afiliados.cod_baja='04')
-GROUP BY num_solici";
+GROUP BY num_solici, nro_doc";
 
 $query = mysql_query($sql);
+
 
     while ($secuencia = mysql_fetch_array($query)){
 
@@ -124,8 +125,8 @@ LEFT JOIN valor_plan ON valor_plan.secuencia = contratos.secuencia AND contratos
 LEFT JOIN e_contrato ON e_contrato.cod = contratos.estado
 LEFT JOIN domicilios ON domicilios.nro_doc = contratos.titular AND domicilios.num_solici = contratos.num_solici AND (domicilios.tipo_dom=1 || domicilios.tipo_dom=2)
 LEFT JOIN f_pago ON contratos.f_pago = f_pago.codigo
-LEFT JOIN ZOSEMA ON ZOSEMA.ZO = contratos.ZO AND ZOSEMA.SE = contratos.SE AND ZOSEMA.MA = contratos.MA
-LEFT JOIN cobrador ON cobrador.nro_doc = ZOSEMA.cobrador
+LEFT JOIN zosema ON zosema.ZO = contratos.ZO AND zosema.SE = contratos.SE AND zosema.MA = contratos.MA
+LEFT JOIN cobrador ON cobrador.nro_doc = zosema.cobrador
 LEFT JOIN titulares ON titulares.nro_doc = contratos.titular
 
 
@@ -137,8 +138,6 @@ AND (contratos.estado ='500' || contratos.estado ='400' || contratos.estado =  '
 AND (f_pago != '600' || f_pago !=400) AND contratos.tipo_plan != 5 AND contratos.tipo_plan != 2 AND contratos.f_ingreso <= '".$limite."'
 
 ORDER BY cobrador.nro_doc";
-
-
 
 $fac_query = mysql_query($fac_sql);
 
