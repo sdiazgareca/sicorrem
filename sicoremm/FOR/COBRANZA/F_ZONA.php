@@ -27,7 +27,7 @@ include_once('../../CLA/Select.php');
 <div id="ajax1">
 <h1>INGRESO ZO - SE - MA</h1>
 
-<form action="INT/M_zosema.php" method="post" id="ing2" name="ing2" >
+<form action="INT/M_ZOSEMA.php" method="post" id="ing2" name="ing2" >
 <div class="caja_cabezera">
 
 &nbsp;ZO - SE - MA</div> 

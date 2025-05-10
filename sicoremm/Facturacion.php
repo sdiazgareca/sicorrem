@@ -59,7 +59,7 @@ $sql = "SELECT cobrador,contratos.titular,contratos.ZO, contratos.SE, contratos.
         LEFT JOIN valor_plan ON valor_plan.secuencia = contratos.secuencia AND contratos.cod_plan = valor_plan.cod_plan AND contratos.tipo_plan = valor_plan.tipo_plan
         LEFT JOIN e_contrato ON e_contrato.cod = contratos.estado
         LEFT JOIN f_pago ON f_pago.codigo = contratos.f_pago
-        LEFT JOIN zosema ON zosema.ZO = contratos.ZO AND zosema.SE = contratos.SE AND zosema.MA = contratos.MA
+        LEFT JOIN ZOSEMA ON ZOSEMA.ZO = contratos.ZO AND ZOSEMA.SE = contratos.SE AND ZOSEMA.MA = contratos.MA
         LEFT JOIN domicilios ON domicilios.nro_doc = contratos.titular AND domicilios.num_solici = contratos.num_solici
 
         WHERE
