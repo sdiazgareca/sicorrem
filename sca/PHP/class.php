@@ -306,8 +306,8 @@ $correlativo = $correlativo + 1;
 
 for($i=0;$i< count($trozos);$i++){
 if ($trozos[$i] > 0){
- $_GET['rut'] = (empty($_GET['rut'])) ? 0 : "'".$_GET['rut']."'";   
-$query ="insert into sintomas_reg(sintoma,rut,correlativo) values ('".$trozos[$i]."','".$_GET['rut']."','".$correlativo."')";
+    $rutTem = (empty($_GET['rut'])) ? 0 : $_GET['rut'];  
+$query ="insert into sintomas_reg(sintoma,rut,correlativo) values ('".$trozos[$i]."','".$rutTem."','".$correlativo."')";
 $res = mysql_query($query);
 }
 }

@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-date_default_timezone_set("Chile/Continental");
+date_default_timezone_set("America/New_York");
 include('conf.php');
 include('bd.php');
 
