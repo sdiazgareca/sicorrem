@@ -2,7 +2,7 @@
 define ('HOST','192.168.168.21');
 define ('USUARIO','root');
 define ('CLAVE','nuncalosabras');
-define ('BD','sicoremm2');
+define ('BD','sicoremm2-qa');
 
 /* mensajes */
 define ('ERROR_RUT','<div class="mensaje2"><img src="IMG/M1.png" />El rut ingresado existe en la base de datos.</div>');

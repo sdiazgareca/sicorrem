@@ -424,7 +424,7 @@ function Listado_per($campos,$tabla,$where,$opp1,$opp2,$get1,$get2,$ruta,$rut,$g
 	
 	$query = "SELECT ".$camp." FROM ".$tabla." ".$condicion."";
 
-	echo '<br /><strong>'.$query.'</strong><br />';
+	//echo '<br /><strong>'.$query.'</strong><br />';
         
 	$data1 = mysql_query($query);
 	$campos = mysql_fetch_assoc($data1);

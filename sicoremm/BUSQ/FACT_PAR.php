@@ -90,7 +90,10 @@ contratos.MA,
 contratos.titular,
 e_contrato.descripcion,
 contratos.num_solici,
-valor_plan.valor AS importe,
+CASE
+WHEN p.id_tipo_moneda = 2 THEN valor_plan.valor * ".$_POST['valor_uf']."
+ELSE valor_plan.valor
+END AS importe,
 contratos.f_pago,
 contratos.titular,
 DATE_FORMAT(contratos.f_baja,'%d-%m-%Y')  AS f_baja,
@@ -119,7 +122,7 @@ contratos.cod_plan,
 cobrador.codigo AS cobrador_cod
 
 FROM contratos
-
+LEFT JOIN planes p ON p.cod_plan = contratos.cod_plan AND p.tipo_plan = contratos.tipo_plan 
 LEFT JOIN valor_plan ON valor_plan.secuencia = contratos.secuencia AND contratos.cod_plan = valor_plan.cod_plan AND contratos.tipo_plan = valor_plan.tipo_plan
 LEFT JOIN e_contrato ON e_contrato.cod = contratos.estado
 LEFT JOIN domicilios ON domicilios.nro_doc = contratos.titular AND domicilios.num_solici = contratos.num_solici AND (domicilios.tipo_dom=1 || domicilios.tipo_dom=2)
@@ -138,7 +141,7 @@ AND (f_pago != '600' || f_pago !=400) AND contratos.tipo_plan != 5 AND contratos
 
 ORDER BY cobrador.nro_doc";
 
-
+//echo $fac_sql.'<br />';
 
 $fac_query = mysql_query($fac_sql);
 
@@ -173,6 +176,9 @@ echo '<tr>
     <th>Total</th>
     <th>sec</th>
     </tr>';
+
+
+    
 
 
 while ($fac = mysql_fetch_array($fac_query)){
