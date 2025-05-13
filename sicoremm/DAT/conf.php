@@ -1,8 +1,8 @@
 <?php
-define ('HOST','192.168.168.21');
+define ('HOST','172.23.96.1');
 define ('USUARIO','root');
-define ('CLAVE','nuncalosabras');
-define ('BD','sicoremm2-qa');
+define ('CLAVE','cucha5455');
+define ('BD','sicoremm2');
 
 /* mensajes */
 define ('ERROR_RUT','<div class="mensaje2"><img src="IMG/M1.png" />El rut ingresado existe en la base de datos.</div>');

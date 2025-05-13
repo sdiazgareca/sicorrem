@@ -1,7 +1,5 @@
 @echo off
 
-REM Change to the desired directory
-cd c:\Users\Usuario\Desktop\Apps\sicoremm
 
 REM Stop and remove the container
 docker stop sicoremm
