@@ -12,4 +12,4 @@ REM Build the new image
 docker build -t sicoremm-image .
 
 REM Run the container
-docker run -p 8080:80 --name sicoremm sicoremm-image
+docker run -d -p 8080:80 --name sicoremm sicoremm-image

@@ -43,8 +43,8 @@ include_once('../../CLA/Select.php');
 <h1>CONFIGURACI&Oacute;N UF</h1>
 
 <div class="caja_cabezera">UF</div>
-<form action="INT/M_PSALU.php" method="post" id="F_AUDI" name="F_AUDI">
-    <input type="text" name="ff_bus_psalu" value="1" style="display:none;" />
+<form action="INT/M_UF.php" method="post" id="F_AUDI" name="F_AUDI">
+    <input type="text" name="ff_bus" value="1" style="display:none;" />
     <div class="caja">
         <table>
             <tr>
@@ -52,7 +52,7 @@ include_once('../../CLA/Select.php');
                 <td>
                     <?php
                     $estado = new Select;
-                    $estado->selectMesActual('mes', 'mes');
+                    $estado->selectMesActual('id_mes', 'id_mes');
                     ?>
                 </td>
 

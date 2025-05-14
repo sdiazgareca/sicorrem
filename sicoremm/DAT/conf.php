@@ -1,5 +1,5 @@
 <?php
-define ('HOST','172.23.96.1');
+define ('HOST','172.30.128.1');
 define ('USUARIO','root');
 define ('CLAVE','cucha5455');
 define ('BD','sicoremm2');
