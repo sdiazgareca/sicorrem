@@ -1,5 +1,5 @@
 <?php
-define ('HOST','172.30.128.1');
+define ('HOST','192.168.100.9');
 define ('USUARIO','root');
 define ('CLAVE','cucha5455');
 define ('BD','sicoremm2');
@@ -14,7 +14,7 @@ define ('ERROR','<div class="mensaje2"><img src="IMG/M1.png" />&nbsp;El valor ex
 define ('ERROR2','<div class="mensaje2"><img src="IMG/M1.png" />&nbsp;No es posible eliminar el registro.</div>');
 define ('v_secuencia','3999');
 
-/*
+
 echo '<br /><strong>'.$_SERVER['SCRIPT_NAME'].'</strong><br />';
 
 foreach($_POST AS $campo=>$valor){
@@ -23,5 +23,5 @@ foreach($_POST AS $campo=>$valor){
 foreach($_GET AS $campo=>$valor){
     echo 'GET '.$campo.' '.$valor.'<br />';
 }
-*/
+
 ?>

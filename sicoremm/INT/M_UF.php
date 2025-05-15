@@ -63,30 +63,35 @@ echo '<pre>';
 var_dump($_REQUEST);  // o $_GET, $_REQUEST, etc.
 echo '</pre>';*/
 
-/* INGRESO PREVISION DE SALUD */
-if (isset($_POST['ff_ing_psalu'])) {
-	$datos = new Datos;
+/* INGRESO REGISTRO UF */
+if (isset($_POST['ff_ing_uf'])) {
 
-	$estado = array("f_ingreso" => date('Y-m-d'));
-	$datos->INSERT_PoST('obras_soc', '', $estado, $_POST['cod_plan']);
+    $mes = $_POST['mes'];
+    $anio = $_POST['anio'];
+    $valor = $_POST['valor'];
 
-	if (mysql_query($datos->query)) {
-		echo OK;
-	} else {
-		echo ERROR;
-	}
+    if ($mes > 0 && $anio > 0 && is_numeric($valor)) {
+        $sql = "INSERT INTO uf (mes, anio, valor) VALUES ('$mes', '$anio', '$valor')";
+        if (mysql_query($sql)) {
+            echo "OK";
+        } else {
+            echo "ERROR al insertar: " . mysql_error();
+        }
+    } else {
+        echo "ERROR: Datos inválidos";
+    }
 }
+
 
 /* BUSQUEDA PREVISION DE SALUD */
 
 if (isset($_POST['ff_bus'])) {
 
-
 	$datos = new Datos;
 
 	foreach ($_POST as $campo => $valor) {
 
-		if ($valor != $_POST['ff_bus'] && $valor != "") {
+		if (($valor != $_POST['ff_bus'] && $valor != "") && !($campo === 'id_mes' && $valor == 0)) {
 			if (is_numeric($valor)) {
 				$condicion[$campo] = " = " . $valor;
 			} else {
@@ -103,26 +108,29 @@ if (isset($_POST['ff_bus'])) {
 	$campos = array("id" => "Id", "mes" => "Mes", "anio" => "Año", "valor" => "Valor");
 	$rut = array("NULL" => "");
 	$datos->Listado_per($campos, "vista_uf", $condicion, "VER", "ELIMINAR", $get1, $get2, "INT/M_UF.php", $rut, $get1_var, $get2_var, "table");
-	
+
 }
 
 /* PROCESA EDICION */
 
-if ($_POST['ff_edisalud']) {
+if (isset($_POST['ff_edi_uf'])) {
 
-	$sql = "UPDATE obras_soc SET descripcion='" . $_POST['descripcion'] . "', tipo='" . $_POST['cod_tipo'] . "',reducido='" . $_POST['reducido'] . "' WHERE nro_doc='" . $_POST['nro_doc'] . "' AND tipo='" . $_POST['cod_tipo'] . "'";
+    $id = $_POST['id'];
+    $mes = $_POST['mes'];
+    $anio = $_POST['anio'];
+    $valor = $_POST['valor'];
 
-	if ($query = mysql_query($sql)) {
-		$_GET['VER'] = 1;
-		$_GET['nro_doc'] = $_POST['nro_doc'];
-		$_GET['cod_tipo'] = $_POST['cod_tipo'];
+    $sql = "UPDATE uf SET mes = '$mes', anio = '$anio', valor = '$valor' WHERE id = '$id'";
 
-	} else {
-		echo ERROR;
-	}
-
-
+    if (mysql_query($sql)) {
+        // Para que se muestre el detalle actualizado
+        $_GET['VER'] = 1;
+        $_GET['id'] = $id;
+    } else {
+        echo "ERROR";
+    }
 }
+
 
 /* LISTRAR DETALLE DE LA PREVISION DE SALUD */
 
@@ -136,7 +144,7 @@ if (isset($_GET['VER'])) {
 	echo "<div class='caja'>";
 	$datos->Imprimir($campos, 'vista_uf', $condicion, 1, $rut);
 
-	echo '<div style="padding:10px"><a href="INT/M_PSALU.php?EDITAR=1&cod_tipo=' . $_GET['cod_tipo'] . '&nro_doc=' . $_GET['nro_doc'] . '" class="boton" >EDITAR</a></div>';
+	echo '<div style="padding:10px"><a href="INT/M_UF.php?EDITAR=1&id=' . $_GET['id'] . '" class="boton" >EDITAR</a></div>';
 
 	echo "</div>";
 
@@ -145,72 +153,71 @@ if (isset($_GET['VER'])) {
 /* FORMULARIO EDITAR */
 if ($_GET['EDITAR'] > 0) {
 
-	$con_sql = "SELECT nro_doc, descripcion, reducido, cod_tipo, isapre FROM PSALUD WHERE nro_doc ='" . $_GET['nro_doc'] . "' AND cod_tipo='" . $_GET['cod_tipo'] . "'";
-	$query = mysql_query($con_sql);
-	$isapre = mysql_fetch_array($query);
+	$id = $_GET['id'];
+	$sql = "SELECT id, mes, anio, valor FROM uf WHERE id = '$id'";
+	$query = mysql_query($sql);
+	$uf = mysql_fetch_array($query);
+
+	if (!$uf) {
+		echo "<div class='mensaje2'>No se encontró el registro UF para editar.</div>";
+		return;
+	}
 	?>
 
-	<h1>EDICI&Oacute;N PREVISI&Oacute;N DE SALUD</h1>
+	<h1>EDICI&Oacute;N UF</h1>
 
-	<div class="caja_cabezera">PLANES</div>
-	<form action="INT/M_PSALU.php" method="post" id="ff_EPSALUD" name="ff_EPSALUD">
-		<input type="text" name="ff_edisalud" value="1" style="display:none;" />
+	<div class="caja_cabezera">MODIFICAR VALOR UF</div>
+	<form action="INT/M_UF.php" method="post" id="ff_EPSALUD" name="ff_EPSALUD">
+		<input type="hidden" name="ff_edi_uf" value="1" />
+		<input type="hidden" name="id" value="<?php echo $uf['id']; ?>" />
 		<div class="caja">
 			<table>
 				<tr>
-					<td><strong>N&Uacute;MERO</strong></td>
-					<td><input type="text" name="nro_doc" value="<?php echo $_GET['nro_doc']; ?>" /></td>
-					<td><strong>NOMBRE</strong></td>
-					<td><input type="text" name="descripcion" size="40" value="<?php echo $isapre['descripcion']; ?>" />
-					</td>
-				</tr>
-
-				<tr>
-					<td><strong>REDUCIDO</strong></td>
-					<td><input type="text" name="reducido" size="20" value="<?php echo $isapre['reducido']; ?>" /></td>
-
-					<td><strong>TIPO</strong></td>
+					<td><strong>MES</strong></td>
 					<td>
 						<?php
-
-						$select = "SELECT tipo, codigo FROM tipo_obrasocial";
-						$select_query = mysql_query($select);
-						echo '<select name="cod_tipo">';
-						echo '<option value="' . $isapre['cod_tipo'] . '">' . $isapre['isapre'] . '</option>';
-
-						while ($op = mysql_fetch_array($select_query)) {
-							echo '<option value="' . $op['codigo'] . '">' . $op['tipo'] . '</option>';
-						}
-
-						echo '</select>';
-
+						$select = new Select;
+						$select->selectMesActual('mes', 'mes', $uf['mes']);
 						?>
 					</td>
 
+					<td><strong>A&Ntilde;O</strong></td>
 					<td>
-						<div align="right"><input type="submit" value="EDITAR" class="boton" /></div>
+						<?php
+						$select = new Select;
+						$select->selectAnios('anio', 'anio', $uf['anio']);
+						?>
+					</td>
+
+					<td><strong>VALOR</strong></td>
+					<td><input type="text" name="valor" value="<?php echo $uf['valor']; ?>" /></td>
+
+					<td>
+						<div align="right">
+							<input type="submit" value="EDITAR" class="boton" />
+						</div>
 					</td>
 				</tr>
 			</table>
-
 		</div>
-
 	</form>
 
 	<?php
 }
 
-/* ELIMINAR PREVISION DE SALUD */
+
+/* ELIMINAR REGISTRO UF */
 if (isset($_GET['ELIMINAR'])) {
-
-	$query = "DELETE FROM obras_soc WHERE nro_doc='" . $_GET['nro_doc'] . "' AND tipo = '" . $_GET['cod_tipo'] . "'";
-	if (mysql_query($query)) {
-		echo OK;
-	} else {
-		echo ERROR;
-	}
-
+    $id = $_GET['id'];
+    $query = "DELETE FROM uf WHERE id = '$id'";
+    
+    if (mysql_query($query)) {
+        echo "OK";
+    } else {
+        echo "ERROR";
+    }
 }
+
 
 
 
