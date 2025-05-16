@@ -80,12 +80,9 @@ if ($_POST['num_solici'] > 1) {
             $rut = new Datos;
             $rut->validar_rut($cont['titular']);
 
-            echo "id_tipo_moneda: " . $cont['id_tipo_moneda'];
-
-            if (is_null($cont['valor_uf'])) {
-                echo 'aca: valor UF es null';
-            } else {
-                echo 'aca: ' . $cont['valor_uf'];
+            if ($cont['id_tipo_moneda'] == 2 && is_null($cont['valor_uf'])) {
+                echo "<div class='mensaje2'><img src='IMG/M1.png' />No se encontró un valor de UF registrado para este plan.</div>";
+                return;
             }
 
 
