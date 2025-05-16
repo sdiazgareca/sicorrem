@@ -9,7 +9,7 @@
         });
 
         // Envío del formulario
-        $('#ajax #F_AUDI').submit(function () {
+        $('#ff_ing_uf').submit(function () {
             var url_ajax = $(this).attr('action');
             var data_ajax = $(this).serialize();
 
