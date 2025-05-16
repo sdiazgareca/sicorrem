@@ -46,7 +46,7 @@ include_once('../../CLA/Select.php');
 <h1>CONFIGURACI&Oacute;N UF</h1>
 
 <div class="caja_cabezera">UF</div>
-<form action="INT/M_UF.php" method="post" id="F_AUDI" name="F_AUDI">
+<form action="INT/M_UF.php" method="post" id="ff_ing_uf" name="ff_ing_uf">
     <input type="text" name="ff_bus" value="1" style="display:none;" />
     <div class="caja">
         <table>
