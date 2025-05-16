@@ -109,9 +109,8 @@ include_once('../CLA/Datos.php');
             <td><strong>N BOLETA</strong></td><td><input type="text" name="boletas" /></td>
             <td><strong>Periodo</strong></td><td><input type="text" name="periodo" /></td>
             <td><strong>Ajuste</strong></td><td><input type="text" name="Ajuste" /></td>
-			<td><strong>Valor UF</strong></td><td><input type="text" name="valor_uf" /></td>
             <td><input type="submit" value="Generar" class="boton"></td>
-        </tr>
+        </tr> 
 
     </table>
 

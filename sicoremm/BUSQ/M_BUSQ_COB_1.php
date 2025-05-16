@@ -187,7 +187,6 @@ function fecha_normal_a_mysql($fecha){
 function pago_cta($serie,$nro_doc,$tipo_comp,$comprovante,$cod_mov,$afectacion,$fecha_mov,$fecha_vto,$importe,$cobrador,$num_solici,$fecha,$debe,$haber,$rendicion){
 
     $rendicion = is_string($rendicion)? 0 : $rendicion;
-
     $fecha_mov1 = fecha_normal_a_mysql($fecha_mov);
     $fecha_vto2 = fecha_normal_a_mysql($fecha_vto);
     $fecha3 = fecha_normal_a_mysql($fecha);
