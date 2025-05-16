@@ -1,39 +1,36 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-
+        // Validación de RUT si aplica
         $('.rut').Rut({
             on_error: function () { alert('Rut incorrecto'); }
         });
 
+        // Calendario si algún campo lo necesita
+        $(".calendario").datepicker({ dateFormat: 'dd-mm-yy' });
 
-        $('#ajax3 #ingVenFree').submit(function () {
-
+        // Envío del formulario de ingreso UF vía AJAX
+        $('#ajax3 #ff_ing_uf').submit(function () {
             var url_ajax = $(this).attr('action');
             var data_ajax = $(this).serialize();
 
             $.ajax({
-                type: 'POST', url: url_ajax, cache: false, data: data_ajax, success: function (data) {
+                type: 'POST',
+                url: url_ajax,
+                cache: false,
+                data: data_ajax,
+                success: function (data) {
                     $('#ajax3').html(data);
                 }
-            })
-
-            url_ajax = "";
-            data_ajax = "";
+            });
 
             return false;
         });
 
-        $(function () { $(".calendario").datepicker({ dateFormat: 'dd-mm-yy' }); });
-
     });
-
-
 </script>
 
 <?php
-//include_once('../DAT/conf.php');
-//include_once('../DAT/bd.php');
 include_once('../../DAT/conf.php');
 include_once('../../DAT/bd.php');
 include_once('../../CLA/Select.php');
@@ -42,11 +39,11 @@ include_once('../../CLA/Select.php');
 <div id="ajax1">
     <h1>INGRESO UF</h1>
 
-    <form action="INT/M_PSALU.php" method="post" id="ingVenFree" name="ingVenFree">
+    <form action="INT/M_UF.php" method="post" id="ff_ing_uf" name="ff_ing_uf">
+        <input type="hidden" name="ff_ing_uf" value="1" />
+        
         <div class="caja_cabezera">
-
             &nbsp;INGRESO
-
         </div>
 
         <div class="caja">
@@ -55,24 +52,28 @@ include_once('../../CLA/Select.php');
                     <td><strong>MES</strong></td>
                     <td>
                         <?php
-                        $estado = new Select;
-                        $estado->selectMesActual('mes', 'mes');
+                        $select = new Select;
+                        $select->selectMesActual('mes', 'mes');
                         ?>
                     </td>
                     <td><strong>A&Ntilde;O</strong></td>
                     <td>
                         <?php
-                        $estado = new Select;
-                        $estado->selectAnios('anio', 'anio');
+                        $select = new Select;
+                        $select->selectAnios('anio', 'anio');
                         ?>
                     </td>
-                    <td><strong>Valor</strong></td>
+                    <td><strong>VALOR</strong></td>
                     <td>
                         <input type="text" name="valor" id="valor" />
+                    </td>
                     <td></td>
                 </tr>
             </table>
         </div>
-        <div class="caja_boton" align="right"><input type="submit" value="Guardar" class="boton"></div>
+
+        <div class="caja_boton" align="right">
+            <input type="submit" value="Guardar" class="boton">
+        </div>
     </form>
 </div>

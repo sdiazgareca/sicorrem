@@ -1,5 +1,5 @@
 <?php
-define ('HOST','192.168.100.9');
+define ('HOST','192.168.176.1');
 define ('USUARIO','root');
 define ('CLAVE','cucha5455');
 define ('BD','sicoremm2');
@@ -15,13 +15,17 @@ define ('ERROR2','<div class="mensaje2"><img src="IMG/M1.png" />&nbsp;No es posi
 define ('v_secuencia','3999');
 
 
-echo '<br /><strong>'.$_SERVER['SCRIPT_NAME'].'</strong><br />';
+echo '<pre /><strong>'.$_SERVER['SCRIPT_NAME'].'</strong></pre>';
 
 foreach($_POST AS $campo=>$valor){
+    echo '<pre>';
     echo 'POST '.$campo.' '.$valor.'<br />';
+    echo '</pre>';
 }
 foreach($_GET AS $campo=>$valor){
+    echo '<pre>';
     echo 'GET '.$campo.' '.$valor.'<br />';
+    echo '</pre>';
 }
 
 ?>

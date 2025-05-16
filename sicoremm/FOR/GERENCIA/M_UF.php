@@ -1,39 +1,42 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+        // Botón borrar
         $('#borrar').click(function () {
-            $('input[name=nro_doc]').val('');
-            $('input[name=descripcion]').val('');
+            $('select[name=id_mes]').val('0');
+            $('select[name=anio]').val('');
+            $('input[name=valor]').val('');
         });
 
+        // Envío del formulario
         $('#ajax #F_AUDI').submit(function () {
-
             var url_ajax = $(this).attr('action');
             var data_ajax = $(this).serialize();
 
             $.ajax({
-                type: 'POST', url: url_ajax, cache: false, data: data_ajax, success: function (data) {
+                type: 'POST',
+                url: url_ajax,
+                cache: false,
+                data: data_ajax,
+                success: function (data) {
                     $('#ajax3').html(data);
                 }
-            })
-
-            url_ajax = "";
-            data_ajax = "";
+            });
 
             return false;
         });
 
+        // Carga de enlaces
         $('#ajax1 a').click(function () {
-
             var ruta = $(this).attr('href');
             $('#ajax3').load(ruta);
             $.ajax({ cache: false });
-            ruta = "";
             return false;
         });
 
     });
 </script>
+
 
 <?php
 include_once('../../DAT/conf.php');
@@ -66,7 +69,7 @@ include_once('../../CLA/Select.php');
                 </td>
                 <td><strong>Valor</strong></td>
                 <td>
-                    <input type="text" name="valor" id="valor"/>
+                    <input type="text" name="valor" id="valor" />
                 <td>
                     <div align="right"><input type="submit" value="Buscar" class="boton" />&nbsp;&nbsp;<input
                             type="button" value="Borrar" id="borrar" class="boton" /></div>

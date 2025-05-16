@@ -20,7 +20,7 @@
 
 		$('#ajax3 a:contains("ELIMINAR")').click(function () {
 
-			if (!confirm(" Esta seguro de eliminar el estado del Plan?")) {
+			if (!confirm("¿Esta seguro de eliminar la UF?")) {
 				return false;
 			}
 			else {
@@ -58,10 +58,6 @@ include_once('../DAT/conf.php');
 include_once('../DAT/bd.php');
 include_once('../CLA/Datos.php');
 include_once('../CLA/Select.php');
-/*
-echo '<pre>';
-var_dump($_REQUEST);  // o $_GET, $_REQUEST, etc.
-echo '</pre>';*/
 
 /* INGRESO REGISTRO UF */
 if (isset($_POST['ff_ing_uf'])) {
@@ -71,8 +67,14 @@ if (isset($_POST['ff_ing_uf'])) {
     $valor = $_POST['valor'];
 
     if ($mes > 0 && $anio > 0 && is_numeric($valor)) {
-        $sql = "INSERT INTO uf (mes, anio, valor) VALUES ('$mes', '$anio', '$valor')";
-        if (mysql_query($sql)) {
+
+        // Eliminar todas las UF del mismo año antes de insertar
+        $delete_sql = "DELETE FROM uf";
+        mysql_query($delete_sql);
+
+        // Insertar la nueva UF
+        $insert_sql = "INSERT INTO uf (mes, anio, valor) VALUES ('$mes', '$anio', '$valor')";
+        if (mysql_query($insert_sql)) {
             echo "OK";
         } else {
             echo "ERROR al insertar: " . mysql_error();
@@ -81,6 +83,7 @@ if (isset($_POST['ff_ing_uf'])) {
         echo "ERROR: Datos inválidos";
     }
 }
+
 
 
 /* BUSQUEDA PREVISION DE SALUD */
