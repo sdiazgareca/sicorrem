@@ -1,133 +1,180 @@
 <script type="text/javascript">
-$(document).ready(function() {
+	$(document).ready(function () {
 
-    	$('#factu99').submit(function(){
+		$('#factu99').submit(function () {
 
-		if(!confirm("Esta seguro de iniciar el proceso?")) {
+			if (!confirm("Esta seguro de iniciar el proceso?")) {
+				return false;
+			}
+
+			var url_ajax = $(this).attr('action');
+			var data_ajax = $(this).serialize();
+
+			$.ajax({
+				type: 'POST', url: url_ajax, cache: false, data: data_ajax, success: function (data) {
+					$('#factu_1').html(data);
+				}
+			})
+
+			url_ajax = "";
+			data_ajax = "";
+
 			return false;
-		 }
+		});
 
-		var url_ajax = $(this).attr('action');
-		var data_ajax = $(this).serialize();
+		$('#factu').submit(function () {
 
-		$.ajax({type: 'POST',url:url_ajax,cache: false,data:data_ajax,success: function(data) {
-		$('#factu_1').html(data);}})
+			if (!confirm("Esta seguro de iniciar el proceso?")) {
+				return false;
+			}
 
-		url_ajax ="";
-		data_ajax="";
+			var url_ajax = $(this).attr('action');
+			var data_ajax = $(this).serialize();
 
-		return false;});
+			$.ajax({
+				type: 'POST', url: url_ajax, cache: false, data: data_ajax, success: function (data) {
+					$('#factu_1').html(data);
+				}
+			})
 
-	$('#factu').submit(function(){
+			url_ajax = "";
+			data_ajax = "";
 
-		if(!confirm("Esta seguro de iniciar el proceso?")) {
 			return false;
-		 }
+		});
 
-		var url_ajax = $(this).attr('action');
-		var data_ajax = $(this).serialize();
+		$('#factu2').submit(function () {
 
-		$.ajax({type: 'POST',url:url_ajax,cache: false,data:data_ajax,success: function(data) {
-		$('#factu_1').html(data);}})
+			if (!confirm("Esta seguro de iniciar el proceso?")) {
+				return false;
+			}
 
-		url_ajax ="";
-		data_ajax="";
+			var url_ajax = $(this).attr('action');
+			var data_ajax = $(this).serialize();
 
-		return false;});
+			$.ajax({
+				type: 'POST', url: url_ajax, cache: false, data: data_ajax, success: function (data) {
+					$('#factu_1').html(data);
+				}
+			})
 
-	$('#factu2').submit(function(){
+			url_ajax = "";
+			data_ajax = "";
 
-		if(!confirm("Esta seguro de iniciar el proceso?")) {
 			return false;
-		 }
+		});
 
-		var url_ajax = $(this).attr('action');
-		var data_ajax = $(this).serialize();
+		$('#factu3').submit(function () {
 
-		$.ajax({type: 'POST',url:url_ajax,cache: false,data:data_ajax,success: function(data) {
-		$('#factu_1').html(data);}})
+			var url_ajax = $(this).attr('action');
+			var data_ajax = $(this).serialize();
 
-		url_ajax ="";
-		data_ajax="";
+			$.ajax({
+				type: 'POST', url: url_ajax, cache: false, data: data_ajax, success: function (data) {
+					$('#factu_1').html(data);
+				}
+			})
 
-		return false;});
+			url_ajax = "";
+			data_ajax = "";
 
-	$('#factu3').submit(function(){
+			return false;
+		});
 
-		var url_ajax = $(this).attr('action');
-		var data_ajax = $(this).serialize();
+		$('#factu4').submit(function () {
 
-		$.ajax({type: 'POST',url:url_ajax,cache: false,data:data_ajax,success: function(data) {
-		$('#factu_1').html(data);}})
+			var url_ajax = $(this).attr('action');
+			var data_ajax = $(this).serialize();
 
-		url_ajax ="";
-		data_ajax="";
+			$.ajax({
+				type: 'POST', url: url_ajax, cache: false, data: data_ajax, success: function (data) {
+					$('#factu_1').html(data);
+				}
+			})
 
-		return false;});
+			url_ajax = "";
+			data_ajax = "";
 
-	$('#factu4').submit(function(){
+			return false;
+		});
 
-		var url_ajax = $(this).attr('action');
-		var data_ajax = $(this).serialize();
+		$('#factu100').submit(function () {
 
-		$.ajax({type: 'POST',url:url_ajax,cache: false,data:data_ajax,success: function(data) {
-		$('#factu_1').html(data);}})
+			var url_ajax = $(this).attr('action');
+			var data_ajax = $(this).serialize();
 
-		url_ajax ="";
-		data_ajax="";
+			$.ajax({
+				type: 'POST', url: url_ajax, cache: false, data: data_ajax, success: function (data) {
+					$('#factu_1').html(data);
+				}
+			})
 
-		return false;});
+			url_ajax = "";
+			data_ajax = "";
 
- 	$('#factu100').submit(function(){
-
-		var url_ajax = $(this).attr('action');
-		var data_ajax = $(this).serialize();
-
-		$.ajax({type: 'POST',url:url_ajax,cache: false,data:data_ajax,success: function(data) {
-		$('#factu_1').html(data);}})
-
-		url_ajax ="";
-		data_ajax="";
-
-		return false;});
+			return false;
+		});
 
 
-});
+	});
 </script>
 
 <?php
 include_once('../DAT/conf.php');
 include_once('../DAT/bd.php');
 include_once('../CLA/Datos.php');
+
+// Obtener UF más reciente
+$uf_sql = "SELECT mes, anio, valor FROM vista_UF ORDER BY anio DESC, mes DESC LIMIT 1";
+$uf_result = mysql_query($uf_sql);
+
+$uf_texto = '';
+if ($uf_result && mysql_num_rows($uf_result) > 0) {
+	$uf = mysql_fetch_array($uf_result);
+	$uf_texto = 'UF ' . $uf['mes'] . '/' . $uf['anio'] . ': ' . number_format($uf['valor'], 2, ',', '.');
+} else {
+	$uf_texto = 'No hay UF configurada';
+}
+
 ?>
+
+<div style="text-align: right; font-weight: bold; padding: 10px; font-size: 14px;">
+	<?php echo $uf_texto; ?>
+</div>
 
 <h1>BOLETAS PARTICULARES</h1>
 <form action="BUSQ/FACT_PAR.php" method="post" id="factu">
-    <table class="table2">
+	<table class="table2">
 
-        <tr>
-            <td><strong>N BOLETA</strong></td><td><input type="text" name="boletas" /></td>
-            <td><strong>Periodo</strong></td><td><input type="text" name="periodo" /></td>
-            <td><strong>Ajuste</strong></td><td><input type="text" name="Ajuste" /></td>
-            <td><input type="submit" value="Generar" class="boton"></td>
-        </tr> 
+		<tr>
+			<td><strong>N BOLETA</strong></td>
+			<td><input type="text" name="boletas" /></td>
+			<td><strong>Periodo</strong></td>
+			<td><input type="text" name="periodo" /></td>
+			<td><strong>Ajuste</strong></td>
+			<td><input type="text" name="Ajuste" /></td>
+			<td><input type="submit" value="Generar" class="boton"></td>
+		</tr>
 
-    </table>
+	</table>
 
 
 </form>
 
 <h1>BOLETAS CONVENIOS</h1>
 <form action="BUSQ/FACT_CONV_BOL.php" method="post" id="factu2">
-    <table class="table2">
-        <tr>
-            <td><strong>N BOLETA</strong></td><td><input type="text" name="boletas" /></td>
-            <td><strong>Periodo</strong></td><td><input type="text" name="periodo" /></td>
-            <td><strong>Ajuste</strong></td><td><input type="text" name="Ajuste" /></td>
-            <td><input type="submit" value="Generar" class="boton"></td>
-        </tr>
+	<table class="table2">
+		<tr>
+			<td><strong>N BOLETA</strong></td>
+			<td><input type="text" name="boletas" /></td>
+			<td><strong>Periodo</strong></td>
+			<td><input type="text" name="periodo" /></td>
+			<td><strong>Ajuste</strong></td>
+			<td><input type="text" name="Ajuste" /></td>
+			<td><input type="submit" value="Generar" class="boton"></td>
+		</tr>
 
-    </table>
+	</table>
 
 
 </form>
@@ -135,13 +182,14 @@ include_once('../CLA/Datos.php');
 <br />
 <h1>AREAS PROTEGUIDAS E-FAC</h1>
 <form action="BUSQ/FACT_AP_FC.php" method="post" id="factu3">
-    <table class="table2">
-        <tr>
-            <td><strong>Periodo</strong></td><td><input type="text" name="periodo" /></td>
-            <td><input type="submit" value="Ver" class="boton"></td>
-        </tr>
+	<table class="table2">
+		<tr>
+			<td><strong>Periodo</strong></td>
+			<td><input type="text" name="periodo" /></td>
+			<td><input type="submit" value="Ver" class="boton"></td>
+		</tr>
 
-    </table>
+	</table>
 
 
 </form>
@@ -150,13 +198,14 @@ include_once('../CLA/Datos.php');
 
 <h1>PARTICULARES E-FAC</h1>
 <form action="BUSQ/FACT_EFA_PAR.php" method="post" id="factu4">
-    <table class="table2">
-        <tr>
-            <td><strong>Periodo</strong></td><td><input type="text" name="periodo" /></td>
-            <td><input type="submit" value="Ver" class="boton"></td>
-        </tr>
+	<table class="table2">
+		<tr>
+			<td><strong>Periodo</strong></td>
+			<td><input type="text" name="periodo" /></td>
+			<td><input type="submit" value="Ver" class="boton"></td>
+		</tr>
 
-    </table>
+	</table>
 
 
 </form>
@@ -165,38 +214,41 @@ include_once('../CLA/Datos.php');
 
 <h1>FACTURAS ELECTRONICAS CONVENIOS</h1>
 <form action="BUSQ/FACT_ELEC_CONV.php" method="post" id="factu100">
-    <table class="table2">
+	<table class="table2">
 
-        <?php
+		<?php
 
-        $sql = "SELECT empresa.empresa, empresa.nro_doc, f_factu.breve
+		$sql = "SELECT empresa.empresa, empresa.nro_doc, f_factu.breve
                 FROM empresa
                 INNER JOIN f_factu ON f_factu.codigo = empresa.f_factu
                 WHERE empresa.f_factu = 2 || empresa.f_factu = 3 || empresa.f_factu = 4 || empresa.f_factu = 5";
 
-        $query = mysql_query($sql);
-        ?>
+		$query = mysql_query($sql);
+		?>
 
-        <tr>
-            <td><strong>Empresa</strong></td>
-            <td>
-                <select name="empresa">
-                    <option value="0"></option>
-                    <?php
-                    while($empresa = mysql_fetch_array($query)){
-                    echo '<option value="'.$empresa['nro_doc'].'">'.$empresa['empresa'].'</option>';
-                    }
-                    ?>
-                </select>
+		<tr>
+			<td><strong>Empresa</strong></td>
+			<td>
+				<select name="empresa">
+					<option value="0"></option>
+					<?php
+					while ($empresa = mysql_fetch_array($query)) {
+						echo '<option value="' . $empresa['nro_doc'] . '">' . $empresa['empresa'] . '</option>';
+					}
+					?>
+				</select>
 
-            </td>
-            <td><strong>N FACTURA</strong></td><td><input type="text" name="nfactu" /></td>
-            <td><strong>Periodo</strong></td><td><input type="text" name="periodo" class="calendario" /></td>
-            <td><strong>Ajuste</strong></td><td><input type="text" name="Ajuste" /></td>
-            <td><input type="submit" value="Generar" class="boton"></td>
-        </tr>
+			</td>
+			<td><strong>N FACTURA</strong></td>
+			<td><input type="text" name="nfactu" /></td>
+			<td><strong>Periodo</strong></td>
+			<td><input type="text" name="periodo" class="calendario" /></td>
+			<td><strong>Ajuste</strong></td>
+			<td><input type="text" name="Ajuste" /></td>
+			<td><input type="submit" value="Generar" class="boton"></td>
+		</tr>
 
-    </table>
+	</table>
 
 
 </form>

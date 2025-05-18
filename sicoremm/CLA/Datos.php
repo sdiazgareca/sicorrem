@@ -18,11 +18,11 @@ function Trans($query){
 	
 	foreach($query as $n_consulta=>$consulta){
 		$result = mysql_query($consulta);
-		echo '<br /> [ OK ] '.$consulta.'<br />';
+		//echo '<br /> [ OK ] '.$consulta.'<br />';
 		
 		if(!$result){
 			$error=1;
-			echo '<br /><strong> [ ERROR ] '.$consulta.'</strong><br />';
+			//echo '<br /><strong> [ ERROR ] '.$consulta.'</strong><br />';
 		}
 	}
 
@@ -385,127 +385,129 @@ $tabla = "<table class='table'> <tr>";
 	echo $tabla;
 }
 
-function Listado_per($campos, $tabla, $where, $opp1, $opp2, $get1, $get2, $ruta, $rut, $get1_var, $get2_var, $css) {
-    $num = count($campos);
-    $cont = 0;
-    $camp = ""; // Inicialización
+function Listado_per($campos,$tabla,$where,$opp1,$opp2,$get1,$get2,$ruta,$rut,$get1_var,$get2_var,$css){
+	
+	$num = count($campos);
+	$cont = 0;
+	
+	if (is_array($campos)){
+		foreach($campos as $campo1 => $valor1){
+			$camp = $camp.$campo1;
+				
+				if ($cont < ($num -1)){
+					$camp = $camp.',';
+				}
+					
+				$cont = $cont +1;
+		}
+	}
+	
+	if (is_array($where)){
+		
+		$cont = 0;
+		$num = count($where);
+		$condicion = 'WHERE ';
+		foreach($where as $campo2 => $valor2){
+			$condicion = $condicion.$campo2.$valor2.' ';
+				
+				if ($cont < ($num -1)){
+					$condicion = $condicion.'AND ';
+				}
+					
+				$cont = $cont +1;
+			}	
+	}
+	
+	else{
+	$condicion = "";
+	}
+	
+	$query = "SELECT ".$camp." FROM ".$tabla." ".$condicion."";
 
-    if (is_array($campos)) {
-        foreach ($campos as $campo1 => $valor1) {
-            $camp .= $campo1;
-            if ($cont < ($num - 1)) {
-                $camp .= ',';
-            }
-            $cont++;
-        }
-    }
+	//echo '<br /><strong>'.$query.'</strong><br />';
+        
+	$data1 = mysql_query($query);
+	$campos = mysql_fetch_assoc($data1);
 
-    if (is_array($where)) {
-        $cont = 0;
-        $num = count($where);
-        $condicion = 'WHERE ';
-        foreach ($where as $campo2 => $valor2) {
-            $condicion .= $campo2 . $valor2 . ' ';
-            if ($cont < ($num - 1)) {
-                $condicion .= 'AND ';
-            }
-            $cont++;
-        }
-    } else {
-        $condicion = "";
-    }
+$tabla = "<table class='".$css."'><tr>";
 
-    $query = "SELECT " . $camp . " FROM " . $tabla . " " . $condicion;
-    // echo '<br /><strong>' . $query . '</strong><br />';
+	if($campos) {
+		foreach($campos as $campo => $valor) {
+				$tabla = $tabla."<th>".$campo."</th>";
+		}
+	}
+	
+	$tabla = $tabla."<th>&nbsp;</th><th>&nbsp;</th></tr>";
+	
+	$contador_m = 1;
+	
+	$data2 = mysql_query($query);
+	
+	while($valores = mysql_fetch_assoc($data2)) {
+   			
+		$tabla = $tabla."<tr>";
+   				
+   		foreach($valores as $campo2 => $valor2){
 
-    $data1 = mysql_query($query); // Solo para obtener campos
-    $primera_fila = mysql_fetch_assoc($data1); // Ya no se sobreescribe $campos
-
-    $tabla = "<table class='" . $css . "'><tr>";
-
-    // Encabezados personalizados
-    if ($campos) {
-        foreach ($campos as $campo => $etiqueta) {
-            $tabla .= "<th>" . (!empty($etiqueta) ? $etiqueta : $campo) . "</th>";
-        }
-    }
-
-    $tabla .= "<th>&nbsp;</th><th>&nbsp;</th></tr>";
-
-    $data2 = mysql_query($query);
-
-    while ($valores = mysql_fetch_assoc($data2)) {
-        $tabla .= "<tr>";
-
-        $mat1 = array();
-        $mat2 = array();
-
-        foreach ($valores as $campo2 => $valor2) {
-
-            // Validación de RUT
-            $es_rut = false;
-            foreach ($rut as $cmm => $vall) {
-                if ($cmm == $campo2) {
-                    $es_rut = true;
-                    break;
-                }
-            }
-
-            if ($es_rut) {
-                $tabla .= "<td>" . $this->validar_rut($valor2) . $this->nro_doc . "</td>";
-            } else {
-                $tabla .= "<td>" . $valor2 . "</td>";
-            }
-
-            // Acciones
-            foreach ($get1 as $var1 => $val1) {
-                if ($var1 == $campo2) {
-                    $mat1[$var1] = $valor2;
-                }
-            }
-
-            foreach ($get2 as $var2 => $val2) {
-                if ($var2 == $campo2) {
-                    $mat2[$var2] = $valor2;
-                }
-            }
-        }
-
-        // Botón acción 1
-        $tabla .= "<td align='right'><a class='boton3' href='" . $ruta . "?";
-        foreach ($mat1 as $camp3 => $dato3) {
-            $tabla .= "&" . $camp3 . "=" . $dato3;
-        }
-
-        if (is_array($get1_var)) {
-            foreach ($get1_var as $vap => $cap) {
-                $tabla .= "&" . $vap . "=" . $cap;
-            }
-        }
-
-        $tabla .= "'>" . $opp1 . "</a></td>";
-
-        // Botón acción 2
-        $tabla .= "<td align='right'><a class='boton3' href='" . $ruta . "?";
-        foreach ($mat2 as $camp4 => $dato4) {
-            $tabla .= "&" . $camp4 . "=" . $dato4;
-        }
-
-        if (is_array($get2_var)) {
-            foreach ($get2_var as $vap2 => $cap2) {
-                $tabla .= "&" . $vap2 . "=" . $cap2;
-            }
-        }
-
-        $tabla .= "'>" . $opp2 . "</a></td>";
-
-        $tabla .= "</tr>";
-    }
-
-    $tabla .= "</table>";
-    echo $tabla;
+   			foreach($rut as $cmm => $vall){
+				
+   				if($cmm != $campo2){
+   					$tabla = $tabla."<td>".$valor2."</td>";		
+				}
+				
+				else{
+					$tabla = $tabla."<td>".$this->validar_rut($valor2).$this->nro_doc."</td>";
+   					}					
+				}
+  
+   			foreach($get1 as $var1 => $val1){
+   				if ($var1 == $campo2){  					
+	   				$mat1[$var1] = $valor2;
+	   				}
+	   		}
+	   		
+   		   	foreach($get2 as $var2 => $val2){
+   				if ($var2 == $campo2){  					
+	   				$mat2[$var2] = $valor2;
+	   				}
+	   		}
+	
+	   	}
+	   	$tabla = $tabla."<td align='right'><a class='boton3' href='".$ruta."?";
+	   	foreach($mat1 as $camp3 =>$dato3){
+   			$tabla = $tabla."&".$camp3."=".$dato3;	  	   		
+		}
+		unset($mat1);
+		
+		if ( is_array($get1_var)){
+			foreach($get1_var as $vap => $cap){
+				$tabla = $tabla."&".$vap."=".$cap;
+			}
+		}
+		
+	   	$tabla = $tabla."'>".$opp1."</a></td>";
+		
+		$tabla = $tabla."<td align='right'><a class='boton3' href='".$ruta."?";
+	   	foreach($mat2 as $camp4 =>$dato4){
+   			$tabla = $tabla."&".$camp4."=".$dato4;	  	   		
+		}
+		
+		if ( is_array($get2_var)){
+			foreach($get2_var as $vap2 => $cap2){
+				$tabla = $tabla."&".$vap2."=".$cap2;
+			}
+		}
+		
+		unset($mat2);
+			   		
+		$tabla = $tabla."'>".$opp2."</a></td>"; 	
+	   	$tabla = $tabla."</tr>"; 
+	   	$contador_m = $contador_m + 1;
+	}
+	
+$tabla = $tabla."</table>";
+echo $tabla;
 }
-
 
 function Listado_simple2($campos,$tabla,$where,$opp1,$get1,$ruta,$rut,$get1_var,$css){
 	

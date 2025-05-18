@@ -28,7 +28,7 @@ ROUND(
     WHEN planes.id_tipo_moneda = 1 THEN planes.v_incor
     WHEN uf.valor IS NOT NULL THEN planes.v_incor * uf.valor
     ELSE 0
-  END, 2
+  END, 0
 ) AS v_incor,
   planes.cod_plan AS cod_plan,
   planes.tipo_plan AS tipo_plan,
@@ -66,9 +66,9 @@ LEFT JOIN uf ON 1=1;
 
 
 ALTER TABLE planes
-MODIFY COLUMN v_incor DECIMAL(10,2) NULL;
+MODIFY COLUMN v_incor int(10,2) NULL;
 
 ALTER TABLE cta
-MODIFY debe DECIMAL(10,2),
-MODIFY haber DECIMAL(10,2),
-MODIFY importe DECIMAL(10,2);
+MODIFY debe INT(11),
+MODIFY haber INT(11),
+MODIFY importe INT(11);

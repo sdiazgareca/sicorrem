@@ -14,18 +14,16 @@ define ('ERROR','<div class="mensaje2"><img src="IMG/M1.png" />&nbsp;El valor ex
 define ('ERROR2','<div class="mensaje2"><img src="IMG/M1.png" />&nbsp;No es posible eliminar el registro.</div>');
 define ('v_secuencia','3999');
 
+/*
+echo '<strong>' . $_SERVER['SCRIPT_NAME'] . '</strong> ';
 
-echo '<pre /><strong>'.$_SERVER['SCRIPT_NAME'].'</strong></pre>';
+foreach ($_POST as $campo => $valor) {
+    echo 'POST ' . $campo . '=' . $valor . ' ';
+}
 
-foreach($_POST AS $campo=>$valor){
-    echo '<pre>';
-    echo 'POST '.$campo.' '.$valor.'<br />';
-    echo '</pre>';
+foreach ($_GET as $campo => $valor) {
+    echo 'GET ' . $campo . '=' . $valor . ' ';
 }
-foreach($_GET AS $campo=>$valor){
-    echo '<pre>';
-    echo 'GET '.$campo.' '.$valor.'<br />';
-    echo '</pre>';
-}
+echo '<br />';*/
 
 ?>

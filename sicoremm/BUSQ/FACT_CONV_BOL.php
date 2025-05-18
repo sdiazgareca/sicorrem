@@ -94,7 +94,7 @@ contratos.cod_plan,
 p.id_tipo_moneda
 
 FROM contratos
-
+LEFT JOIN planes p ON p.cod_plan = contratos.cod_plan AND p.tipo_plan = contratos.tipo_plan
 LEFT JOIN valor_plan ON valor_plan.secuencia = contratos.secuencia AND contratos.cod_plan = valor_plan.cod_plan AND contratos.tipo_plan = valor_plan.tipo_plan
 LEFT JOIN e_contrato ON e_contrato.cod = contratos.estado
 LEFT JOIN domicilios ON domicilios.nro_doc = contratos.titular AND domicilios.num_solici = contratos.num_solici
@@ -103,14 +103,12 @@ LEFT JOIN ZOSEMA ON ZOSEMA.ZO = contratos.ZO AND ZOSEMA.SE = contratos.SE AND ZO
 LEFT JOIN cobrador ON cobrador.nro_doc = ZOSEMA.cobrador
 LEFT JOIN titulares ON titulares.nro_doc = contratos.titular
 INNER JOIN empresa ON empresa.nro_doc = contratos.empresa
-
+LEFT JOIN uf ON 1=1
 WHERE
 empresa.f_factu = 1 AND
 (contratos.estado ='500' || contratos.estado ='400' || contratos.estado =  '3500')
 AND f_pago = '400' AND contratos.tipo_plan != 5 AND (contratos.tipo_plan != 2 AND contratos.cod_plan != 'W71')
 ORDER BY empresa.nro_doc";
-
-
 
 
 $fac_query = mysql_query($fac_sql);

@@ -60,8 +60,6 @@ class Cta {
                     WHERE num_solici = '".$num_solici."' AND nro_doc='".$nro_doc."'
                     ORDER BY YEAR(fecha_mov),MONTH(fecha_mov),DAY(fecha_mov),comprovante,serie,cta.cod_mov";
 
-            //echo $sql.'<br />';
-
             $query = mysql_query($sql);
 
             $cuenta = '<div style="width:900px;height:300px;overflow:auto;">
@@ -101,7 +99,7 @@ class Cta {
                 $debe = $debe + $cta['debe'];
                 }
 
-                $cuenta = $cuenta.'<td '.$clase.'>'.$cta['cobrador'].'</td><td '.$clase.'>'.number_format($cta['debe'],"2",",",".").'</td><td '.$clase.'>'.number_format($cta['haber'],"0",",",".").'</td>';
+                $cuenta = $cuenta.'<td '.$clase.'>'.$cta['cobrador'].'</td><td '.$clase.'>'.number_format($cta['debe'],"0",",",".").'</td><td '.$clase.'>'.number_format($cta['haber'],"0",",",".").'</td>';
 
 
 
@@ -111,14 +109,14 @@ class Cta {
                     $saldo = $saldo * -1;
                 }
 
-                $cuenta = $cuenta.'<td '.$clase.'>'.number_format($saldo,"2",",",".").'</td>';
+                $cuenta = $cuenta.'<td '.$clase.'>'.number_format($saldo,"0",",",".").'</td>';
                 $cuenta = $cuenta.'<td '.$clase.'>'.$cta['rendicion'].'</td>';
                 $cuenta = $cuenta.'</tr>';
                 }
 
                 $cuenta = $cuenta.'</table></div>';
 
-                echo '<h1>SALDO $ '.number_format($saldo,"2",",",".").'</h1>';
+                echo '<h1>SALDO $ '.number_format($saldo,"0",",",".").'</h1>';
 
                 echo $cuenta;
 
@@ -234,8 +232,6 @@ $cuenta = $cuenta.'
 
               
                 $cuenta = $cuenta.'</div>';
-
-                //echo '<h1>SALDO $ '.number_format($saldo,"0",",",".").'</h1>';
 
                 echo $cuenta;
 
