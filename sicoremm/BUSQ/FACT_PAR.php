@@ -37,20 +37,6 @@ $dia_limite = 19;
 $mes_limite = $mes_f_periodo;
 $anio_limite = $anio_f_periodo;
 
-
-
-//echo 'FECHA PERIODO '.$f_periodo_fac.'<br />';
-//echo 'FECHA LIMITE '.$limite.'<br />';
-
-
-/*
-if ($boletas < 1 || is_numeric($boletas) == 0 || $periodo == "" || checkdate($mes_f_periodo, $dia_f_periodo, $anio_f_periodo) < 1 || checkdate($mes_limite,$dia_limite,$anio_limite) < 1){
-
-    echo '<div class="mensaje2">Error:  Debe llenar todos los campos </div>';
-    exit;
-}
-*/
-
 /* CALCULO DE SECUENCIAS */
 
 $sql = "SELECT COUNT(num_solici) AS secuencia,num_solici,nro_doc
@@ -76,8 +62,6 @@ while ($secuencia = mysql_fetch_array($query)) {
 
 $limite = $anio_limite . '-' . ($mes_limite - 1) . '-' . $dia_limite;
 
-//echo $limite.'<br />';
-
 $fac_sql = "
 
 SELECT
@@ -91,8 +75,8 @@ contratos.titular,
 e_contrato.descripcion,
 contratos.num_solici,
 CASE
-WHEN p.id_tipo_moneda = 2 THEN ROUND(valor_plan.valor * uf.valor,2)
-ELSE valor_plan.valor
+WHEN p.id_tipo_moneda = 2 THEN ROUND(valor_plan.valor * uf.valor,0)
+ELSE ROUND(valor_plan.valor,0)
 END AS importe,
 contratos.f_pago,
 contratos.titular,
@@ -142,8 +126,6 @@ AND (f_pago != '600' || f_pago !=400) AND contratos.tipo_plan != 5 AND contratos
 
 ORDER BY cobrador.nro_doc";
 
-//echo $fac_sql.'<br />';
-
 $fac_query = mysql_query($fac_sql);
 
 echo '<div style="overflow: auto; width: 940px; height: 450px;">';
@@ -176,6 +158,7 @@ echo '<tr>
     <th>Ajuste</th>
     <th>Total</th>
     <th>sec</th>
+    <th>Moneda</th>
     </tr>';
 
 
@@ -184,47 +167,44 @@ echo '<tr>
 
 while ($fac = mysql_fetch_array($fac_query)) {
 
-    $importe = $fac['importe'] + $fac['ajuste'];
+    $importe = ($fac['id_tipo_moneda'] == 1) ? $fac['importe'] + $fac['ajuste'] : $fac['importe'];
 
     //COMPROBAR REAJUSTE
     if ($_POST['Ajuste'] > 0) {
 
-        //echo $periodo.'<br />';    
-
         $f_comp = explode("-", $periodo);
         $anio_comp = $f_comp[2] - 1;
 
-        //$dia_ultimo = UltimoDia($anio_comp, $f_comp[1]);
-        //$f_comparacion = mktime(0,0,0,$f_comp[1],$dia_ultimo,$anio_comp);
-
         $f_comparacion = mktime(0, 0, 0, 4, 30, 2011);
 
-        //echo '<br />'.$f_comparacion.' mes='.$f_comp[1].' dia='.$dia_ultimo.' anio='.$anio_comp.'<br />';
-
-        echo $fac["f_ingreso2"];
         $f_ing = explode("-", $fac["f_ingreso2"]);
         $f_ingreso = mktime(0, 0, 0, $f_ing[1], $f_ing[2], $f_ing[0]);
-        //echo '<br />'.$f_ingreso.' mes='.$f_ing[1].' dia='.$f_ing[2].' anio='.$f_ing[0].'<br />';
-
-
 
         if ($f_ingreso <= $f_comparacion && $fac['tipo_plan'] != 3) {
 
+            if ($fac['id_tipo_moneda'] == 1) {
+                $re_ajuste = $importe * $_POST['Ajuste'] / 100;
+            } else {
+                $re_ajuste = 0;
+                $fac['importe'] = 0;
+            }
 
-            $re_ajuste = $importe * $_POST['Ajuste'] / 100;
-
-
-            $total = ($fac['id_tipo_moneda'] == 1) ? round($importe + $re_ajuste, -2) : $importe + $re_ajuste;
-
-            $ajuste = ($total - $fac['importe']);
+            $total = round($importe + $re_ajuste, -2);
+            $ajuste = $total - $fac['importe'];
 
         } else {
-            $total = ($fac['id_tipo_moneda'] == 1) ? round($importe, -2) : $importe;
+            $total = round($importe, -2);
+            if ($fac['id_tipo_moneda'] == 2) {
+                $fac['ajuste'] = 0;
+            }
+
             $ajuste = $fac['ajuste'];
         }
     } else {
-
-        $total = ($fac['id_tipo_moneda'] == 1) ? round($importe, -2) : $importe;
+        $total = round($importe, -2);
+        if ($fac['id_tipo_moneda'] == 2) {
+            $fac['ajuste'] = 0;
+        }
         $ajuste = $fac['ajuste'];
     }
 
@@ -256,10 +236,7 @@ while ($fac = mysql_fetch_array($fac_query)) {
             }
 
         }
-
     }
-
-
 
     //COB DOMICILIARIO O TRANFERENCIA
     if ($fac['f_pago'] == '300' || $fac['f_pago'] == '500') {
@@ -279,17 +256,13 @@ while ($fac = mysql_fetch_array($fac_query)) {
 
 
             $t = pago_cta($fac['titular'], 'B', $i, 0, $f_periodo2, $f_periodo2, $total, $fac['cobrador_cod'], $fac['num_solici'], $f_periodo2, $total, 0, 0, $ajuste, $i, $fac['ape'] . ' ' . $fac['nom'], $fac['calle'] . ' ' . $fac['poblacion'] . ' ' . $fac['numero'], $fac['ZO'], $fac['SE'], $fac['MA'], $mes_f_periodo, $mes_f_periodo, $fac['telefono'], $fac['secuencia'], $fac['tipo_plan'], $fac['cod_plan'], mes($mes_f_periodo), $anio_f_periodo);
-            echo '<tr><td>' . $i . '</td><td>' . $fac['num_solici'] . '</td><td>' . $fac['titular'] . '</td><td>' . $fac['nom'] . ' ' . $fac['ape'] . '</td><td>' . $fac['f_ingreso'] . '</td><td>' . $ajuste . '</td><td>' . $fac['ZO'] . '</td><td>' . $fac['SE'] . '</td><td>' . $fac['MA'] . '</td><td>' . strtoupper($fac['descripcion']) . '</td><td>' . $fac['calle'] . '</td><td>' . $fac['numero'] . '</td><td>' . $fac['poblacion'] . '</td><td>' . $fac['casa'] . '</td><td>' . $fac['departamento'] . '</td><td>' . $fac['telefono'] . '</td><td>' . $fac['pasaje'] . '</td><td>' . $fac['f_pago_des'] . '</td><td>' . $fac['ap_cob'] . '</td><td>' . $fac['nom_cob'] . '</td><td>' . $num_deudas . '</td><td><strong>FACTURAR 2</strong></td><td>' . $fac['importe'] . '</td><td>' . $re_ajuste . '</td><td>' . $total . '</td><td>' . $fac['secuencia'] . '</td></tr>';
+            echo '<tr><td>' . $i . '</td><td>' . $fac['num_solici'] . '</td><td>' . $fac['titular'] . '</td><td>' . $fac['nom'] . ' ' . $fac['ape'] . '</td><td>' . $fac['f_ingreso'] . '</td><td>' . $ajuste . '</td><td>' . $fac['ZO'] . '</td><td>' . $fac['SE'] . '</td><td>' . $fac['MA'] . '</td><td>' . strtoupper($fac['descripcion']) . '</td><td>' . $fac['calle'] . '</td><td>' . $fac['numero'] . '</td><td>' . $fac['poblacion'] . '</td><td>' . $fac['casa'] . '</td><td>' . $fac['departamento'] . '</td><td>' . $fac['telefono'] . '</td><td>' . $fac['pasaje'] . '</td><td>' . $fac['f_pago_des'] . '</td><td>' . $fac['ap_cob'] . '</td><td>' . $fac['nom_cob'] . '</td><td>' . $num_deudas . '</td><td><strong>FACTURAR 2</strong></td><td>' . $fac['importe'] . '</td><td>' . $re_ajuste . '</td><td>' . $total . '</td><td>' . $fac['secuencia'] . '<td>' . $fac['id_tipo_moneda'] . '</td></tr>';
             if ($t > 0) {
                 $i++;
             }
         }
 
     }
-
-
-
-    //}
 }
 
 echo '</table>';

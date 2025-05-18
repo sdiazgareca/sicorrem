@@ -14,7 +14,7 @@ define ('ERROR','<div class="mensaje2"><img src="IMG/M1.png" />&nbsp;El valor ex
 define ('ERROR2','<div class="mensaje2"><img src="IMG/M1.png" />&nbsp;No es posible eliminar el registro.</div>');
 define ('v_secuencia','3999');
 
-/*
+
 echo '<pre /><strong>'.$_SERVER['SCRIPT_NAME'].'</strong></pre>';
 
 foreach($_POST AS $campo=>$valor){
@@ -27,5 +27,5 @@ foreach($_GET AS $campo=>$valor){
     echo 'GET '.$campo.' '.$valor.'<br />';
     echo '</pre>';
 }
-*/
+
 ?>
