@@ -17,6 +17,14 @@ SELECT
 FROM UF uf
 INNER JOIN meses m ON m.NUMERO = uf.mes;
 
+
+INSERT INTO links (cod_linck, nombre, direccion,cod_modulo) VALUES(36,'UF','FOR/GERENCIA/M_UF.php',400);
+
+INSERT INTO privilegios_reg (cod_registro,cod_modulo,cod_link,cod_usuario)
+VALUES(862,400,36,601);
+
+SELECT * FROM privilegios WHERE link_nombre = 'UF';
+
 CREATE OR REPLACE VIEW contrata_vista AS
 SELECT
   contratos.ajuste AS ajuste,
@@ -68,7 +76,9 @@ LEFT JOIN uf ON 1=1;
 ALTER TABLE planes
 MODIFY COLUMN v_incor int(10,2) NULL;
 
+/*
 ALTER TABLE cta
 MODIFY debe INT(11),
 MODIFY haber INT(11),
 MODIFY importe INT(11);
+*/
