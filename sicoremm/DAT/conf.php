@@ -1,9 +1,17 @@
 <?php
+//QA
+define ('HOST','192.168.168.21');
+define ('USUARIO','root');
+define ('CLAVE','nuncalosabras');
+define ('BD','sicoremm2-qa');
+
+/*
+desarrollo
 define ('HOST','192.168.176.1');
 define ('USUARIO','root');
 define ('CLAVE','cucha5455');
 define ('BD','sicoremm2');
-
+*/
 /* mensajes */
 define ('ERROR_RUT','<div class="mensaje2"><img src="IMG/M1.png" />El rut ingresado existe en la base de datos.</div>');
 define ('INGRE_OK','<div class="mensaje1"><img src="IMG/M2.png" />Los datos se almacenaron con exito.</div>');
